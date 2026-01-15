@@ -23,6 +23,7 @@ struct ContentView: View {
             Button("Click me!") {
                 message = "Awesome!"
             }
+            .buttonStyle(.borderedProminent)
         }
         .padding()
     }
