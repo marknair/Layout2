@@ -13,8 +13,10 @@ struct ContentView: View {
     @State private var imageName = ""
     @State private var lastMessageNumber = -1
     @State private var lastImageNumber = -1
+    @State private var lastSoundNumber = -1
     @State private var audioPlayer: AVAudioPlayer!
     let numberOfImages = 9
+    let numberOfSounds = 6
     
     var body: some View {
         VStack {
@@ -59,9 +61,12 @@ struct ContentView: View {
                 imageName = "image\(imageNumber)"
                 lastImageNumber = imageNumber
                 
-                //MARK: - Retrieve the audio here -
+                var soundNumber: Int
+                repeat {
+                    soundNumber = Int.random(in: 0...numberOfSounds-1)
+                } while soundNumber == lastSoundNumber
+                let soundName = "sound\(soundNumber)"
                 
-                let soundName = "sound0"
                 guard let soundFile = NSDataAsset(name: soundName) else {
                     print("😡 I cannot read the file called \(soundName).")
                     return
