@@ -47,45 +47,52 @@ struct ContentView: View {
                                 "I like turtles",
                                 "It's time for a bike ride."]
                 
-                var messageNumber = Int.random(in: 0...messages.count - 1)
-                while messageNumber == lastMessageNumber {
-                    messageNumber = Int.random(in: 0...messages.count - 1)
-                }
-                message = messages[messageNumber]
-                lastMessageNumber = messageNumber
                 
-                var imageNumber = Int.random(in: 0...numberOfImages)
-                while imageNumber == lastImageNumber {
-                    imageNumber = Int.random(in: 0...numberOfImages)
-                }
-                imageName = "image\(imageNumber)"
+                var messageNumber: Int
+                repeat {
+                    messageNumber = Int.random(in: 0...messages.count - 1)
+                } while messageNumber == lastMessageNumber
+                lastMessageNumber = messageNumber
+                message = messages[messageNumber]
+                
+                var imageNumber: Int
+                repeat {
+                    imageNumber = Int.random(in: 0...numberOfImages-1)
+                } while imageNumber == lastImageNumber
                 lastImageNumber = imageNumber
+                imageName = "image\(imageNumber)"
                 
                 var soundNumber: Int
                 repeat {
                     soundNumber = Int.random(in: 0...numberOfSounds-1)
                 } while soundNumber == lastSoundNumber
-                let soundName = "sound\(soundNumber)"
+                playSound(soundName: "sound\(soundNumber)")
                 
-                guard let soundFile = NSDataAsset(name: soundName) else {
-                    print("😡 I cannot read the file called \(soundName).")
-                    return
-                }
                 
-                //MARK: - Initalize the audio player and play the audio -
-                
-                do {
-                    audioPlayer = try AVAudioPlayer(data: soundFile.data)
-                    audioPlayer.play()
-                } catch {
-                    print("🙈 ERROR: \(error.localizedDescription)!")
-                }
             }
             .buttonStyle(.borderedProminent)
             .font(.title2)
             .tint(.orange)
+            
+    
         }
         .padding()
+    }
+    
+    // MARK: FUNCTIONS
+    
+    func playSound(soundName: String) {
+        guard let soundFile = NSDataAsset(name: soundName) else {
+            print("😡 I cannot read the file called \(soundName).")
+            return
+        }
+        
+        do {
+            audioPlayer = try AVAudioPlayer(data: soundFile.data)
+            audioPlayer.play()
+        } catch {
+            print("🙈 ERROR: \(error.localizedDescription)!")
+        }
     }
 }
 
