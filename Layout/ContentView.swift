@@ -37,7 +37,6 @@ struct ContentView: View {
                 .shadow(radius: 30)
                 .animation(.default, value: imageName)
             
-            
             Spacer()
             
             Button("Click me!") {
@@ -47,39 +46,31 @@ struct ContentView: View {
                                 "I like turtles",
                                 "It's time for a bike ride."]
                 
+                lastMessageNumber = nonRepeatingRandom(lastNumber: lastMessageNumber, upperbound: messages.count - 1)
+                message = messages[lastMessageNumber]
                 
-                var messageNumber: Int
-                repeat {
-                    messageNumber = Int.random(in: 0...messages.count - 1)
-                } while messageNumber == lastMessageNumber
-                lastMessageNumber = messageNumber
-                message = messages[messageNumber]
+                lastImageNumber = nonRepeatingRandom(lastNumber: lastImageNumber, upperbound: numberOfImages - 1)
+                imageName = "image\(lastImageNumber)"
                 
-                var imageNumber: Int
-                repeat {
-                    imageNumber = Int.random(in: 0...numberOfImages-1)
-                } while imageNumber == lastImageNumber
-                lastImageNumber = imageNumber
-                imageName = "image\(imageNumber)"
-                
-                var soundNumber: Int
-                repeat {
-                    soundNumber = Int.random(in: 0...numberOfSounds-1)
-                } while soundNumber == lastSoundNumber
-                playSound(soundName: "sound\(soundNumber)")
-                
-                
+                lastSoundNumber = nonRepeatingRandom(lastNumber: lastSoundNumber, upperbound: numberOfSounds - 1)
+                playSound(soundName: "sound\(lastSoundNumber)")
             }
             .buttonStyle(.borderedProminent)
             .font(.title2)
             .tint(.orange)
-            
-    
         }
         .padding()
     }
     
     // MARK: FUNCTIONS
+    
+    func nonRepeatingRandom(lastNumber: Int, upperbound: Int) -> Int {
+        var newNumber: Int
+        repeat {
+            newNumber = Int.random(in: 0...upperbound)
+        } while newNumber == lastNumber
+        return newNumber
+    }
     
     func playSound(soundName: String) {
         guard let soundFile = NSDataAsset(name: soundName) else {
@@ -94,8 +85,6 @@ struct ContentView: View {
             print("🙈 ERROR: \(error.localizedDescription)!")
         }
     }
-    
-    // TODO: Add new randomization function here
 }
 
 #Preview {
