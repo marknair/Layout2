@@ -45,10 +45,9 @@ struct ContentView: View {
                 Toggle("", isOn: $isSoundOn)
                     .labelsHidden()
                     .onChange(of: isSoundOn) {
-                        if audioPlayer.isPlaying {
-                            audioPlayer.stop()
+                        if audioPlayer != nil && audioPlayer.isPlaying {
+                                audioPlayer.stop()
                         }
-                        
                     }
                 
                 Spacer()
@@ -91,6 +90,10 @@ struct ContentView: View {
     }
     
     func playSound(soundName: String) {
+        if audioPlayer != nil && audioPlayer.isPlaying {
+                audioPlayer.stop()
+        }
+        
         guard let soundFile = NSDataAsset(name: soundName) else {
             print("😡 I cannot read the file called \(soundName).")
             return
